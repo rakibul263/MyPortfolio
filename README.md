@@ -157,7 +157,7 @@ Rakibul Hasan
 - GitHub: [github.com/rakibul263](https://github.com/rakibul263)
 
 Ragib Hasan
-- Email: rakibulhasanshuvo206@gmail.com
+- Email: ragib5303721@gmail.com
 - LinkedIn: [linkedin.com/in/ragibhasan2](https://linkedin.com/in/ragibhasan2)
 - GitHub: [github.com/ragibmondal](https://github.com/ragibmondal)
 
