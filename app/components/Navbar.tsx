@@ -106,7 +106,7 @@ const Navbar = () => {
               </motion.div>
             ))}
             <motion.a
-              href="https://www.linkedin.com/ambry/?x-li-ambry-ep=AQKQRdOteEO0-gAAAZUkqc7vT5glmJLl9F2cRUsKWyki2NlGPOoq1PpKdUvCcE1Rs97S77UonbrlDYOEbvmdH6Hv4kHkZqRLNFeYuWnCZPsULhgbvWM3dxlwAvyV-g6oqWvVP2jfH3JjVlD3sDVDHitO3iDqKnyry0pUmJwD59yYGiURk7Z8Cx-f2d2aCDV5nT5bFAuf1NHkaZIzg2KYOtCEpSKP5dpNbTgITDybNFjU3qlrIKYvxy0W4myUx79yO-2eL2ySxdDMFGwbtLzxi9XfdIwqkYMHozPC9Q3oO1_6WfpcQ-hxRgibfg1Pg6i9oY3-a0w37mBbuybQdwB0TSqnPIArdWqDVyV9GW1WJEj1xEklt2odRkowT0_TUTmfXDogccpPVqe1Qwp5McGO5Y06v3EZjhhDTjkuFwuNpcZWMmFoYu-0bJgriQwY2ytA6Qn6h5j2X2G84oEwmfj6iP4SIk5RUTYRCjBHEXR7Jb_bonqooqQnhcks7xeAKkvxSpQBOeNC-nflQSBm7p2BKt_kYGy22DzsgWbE720GkfPCpBc-8gDbjNqyYl_jIuF0_txpu9E&x-ambry-um-filename=Profile.pdf"
+              href="https://drive.google.com/file/d/1SPOUTxffLU6nBy6_Es7WLHQdwrWSNMK8/view?usp=sharing"
               className="relative overflow-hidden group bg-[#64FFDA] text-[#0A192F] px-4 py-2 rounded transition-all duration-300"
               target="_blank"
               rel="noopener noreferrer"

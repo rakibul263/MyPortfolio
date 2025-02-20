@@ -150,6 +150,7 @@
 
 /* Typing animation */
 .typing-text {
+  font-size: 2.5rem;
   border-right: 2px solid #64FFDA;
   white-space: nowrap;
   overflow: hidden;

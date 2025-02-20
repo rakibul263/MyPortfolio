@@ -51,8 +51,8 @@ const Contact = () => {
     {
       icon: FaEnvelope,
       label: 'Email',
-      value: 'rakibul35-263@diu.edu.bd',
-      href: 'mailto:rakibul35-263@diu.edu.bd'
+      value: 'rakibulhasanshuvo206@gmail.com',
+      href: 'rakibulhasanshuvo206@gmail.com'
     },
     {
       icon: FaPhone,

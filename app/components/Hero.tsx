@@ -84,7 +84,7 @@ const Hero = () => {
             className="text-[#8892B0] font-poppins font-bold text-3xl sm:text-4xl md:text-5xl mb-6 leading-relaxed"
             variants={itemVariants}
           >
-            <span className="typing-text">Computer Science Student | Programmer | Educator</span>
+            <span className="typing-text">CSE Student | Programmer | Problem Solver | Django Developer | Full-Stack Developer</span>
           </motion.h3>
           
           <motion.p 
