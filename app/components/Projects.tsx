@@ -1,17 +1,37 @@
 'use client';
 
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
-import { motion } from 'framer-motion';
+import { FaGithub, FaExternalLinkAlt, FaStar, FaCodeBranch, FaTimes, FaExpand } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
+import Image from 'next/image';
 
-const projects = [
+interface RepoStats {
+  stars: number;
+  forks: number;
+  watchers: number;
+  views: number;
+}
+
+interface Project {
+  title: string;
+  description: string;
+  technologies: string[];
+  github: string;
+  demo: string | null;
+  repoName: string;
+  image: string;
+}
+
+const projects: Project[] = [
   {
     title: 'Meal Explorer',
     description: 'A web application for exploring meal recipes.',
     technologies: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/rakibul263/Meal-Explorer',
     demo: 'https://rakibul263.github.io/Meal-Explorer/',
+    repoName: 'Meal-Explorer',
+    image: '/images/projects/meal-explorer.png'
   },
   {
     title: 'Nature Platter',
@@ -19,6 +39,8 @@ const projects = [
     technologies: ['HTML', 'CSS', 'Tailwind CSS'],
     github: 'https://github.com/rakibul263/Nature-Platter',
     demo: 'https://rakibul263.github.io/Nature-Platter/',
+    repoName: 'Nature-Platter',
+    image: '/images/projects/nature-platter.png'
   },
   {
     title: 'Biker Zone',
@@ -26,6 +48,8 @@ const projects = [
     technologies: ['HTML', 'CSS', 'Bootstrap'],
     github: 'https://github.com/rakibul263/Biker-Zone',
     demo: 'https://rakibul263.github.io/Biker-Zone/',
+    repoName: 'Biker-Zone',
+    image: '/images/projects/biker-zone.png'
   },
   {
     title: 'Tea House',
@@ -33,13 +57,17 @@ const projects = [
     technologies: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/rakibul263/Tea-House',
     demo: 'https://rakibul263.github.io/Tea-House/',
+    repoName: 'Tea-House',
+    image: '/images/projects/tea-house.png'
   },
   {
     title: 'Penguin Fashion',
     description: 'A fashion website built using Tailwind CSS.',
     technologies: ['HTML', 'Tailwind CSS'],
     github: 'https://github.com/rakibul263/Penguin-Fashion-Using-Tailwind',
-    demo: 'https://github.com/rakibul263/Penguin-Fashion-Using-Tailwind',
+    demo: 'https://github.com/rakibul263/Penguin-Fashion-Using-Tailwind/',
+    repoName: 'Penguin-Fashion-Using-Tailwind',
+    image: '/images/projects/penguin-fashion.png'
   },
   {
     title: 'Kids School',
@@ -47,6 +75,8 @@ const projects = [
     technologies: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/rakibul263/Kids-School',
     demo: 'https://rakibul263.github.io/Kids-School/',
+    repoName: 'Kids-School',
+    image: '/images/projects/kids-school.png'
   },
   {
     title: 'Architects Horizon',
@@ -54,6 +84,8 @@ const projects = [
     technologies: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/rakibul263/Architects-Horizon',
     demo: 'https://rakibul263.github.io/Architects-Horizon/',
+    repoName: 'Architects-Horizon',
+    image: '/images/projects/architects-horizon.png'
   },
   {
     title: 'Bangladesh 2.0',
@@ -61,6 +93,8 @@ const projects = [
     technologies: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/rakibul263/BANGLADESH-2.0',
     demo: 'https://rakibul263.github.io/BANGLADESH-2.0/',
+    repoName: 'BANGLADESH-2.0',
+    image: '/images/projects/bangladesh.png'
   },
   {
     title: 'New Year Offer Portfolio',
@@ -68,6 +102,8 @@ const projects = [
     technologies: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/rakibul263/New-Year-Offer-Portfolio',
     demo: 'https://rakibul263.github.io/New-Year-Offer-Portfolio/',
+    repoName: 'New-Year-Offer-Portfolio',
+    image: '/images/projects/new-year-portfolio.png'
   },
   {
     title: 'Spotify Clone',
@@ -75,6 +111,8 @@ const projects = [
     technologies: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/rakibul263/Spotify-Clone',
     demo: 'https://rakibul263.github.io/Spotify-Clone/',
+    repoName: 'Spotify-Clone',
+    image: '/images/projects/spotify-clone.png'
   },
   {
     title: 'Word Cloud',
@@ -82,6 +120,8 @@ const projects = [
     technologies: ['Python', 'Django'],
     github: 'https://github.com/rakibul263/Word-Cloud',
     demo: 'https://github.com/rakibul263/Word-Cloud/blob/main/Screenshot.png',
+    repoName: 'Word-Cloud',
+    image: '/images/projects/word-cloud.png'
   },
   {
     title: 'Daffodil Bank',
@@ -89,12 +129,36 @@ const projects = [
     technologies: ['Python', 'Django'],
     github: 'https://github.com/rakibul263/Daffodil-Bank',
     demo: null,
+    repoName: 'Daffodil-Bank',
+    image: '/images/projects/daffodil-bank.png'
   },
 ];
 
 const Projects = () => {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const [repoStats, setRepoStats] = useState<Record<string, RepoStats>>({});
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [isZoomed, setIsZoomed] = useState(false);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      const stats: Record<string, RepoStats> = {};
+      for (const project of projects) {
+        try {
+          const response = await fetch(`/api/github-stats?repo=${project.repoName}`);
+          const data = await response.json();
+          stats[project.repoName] = data;
+        } catch (error) {
+          console.error(`Error fetching stats for ${project.repoName}:`, error);
+          stats[project.repoName] = { stars: 0, forks: 0, watchers: 0, views: 0 };
+        }
+      }
+      setRepoStats(stats);
+    };
+
+    fetchStats();
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -122,7 +186,7 @@ const Projects = () => {
   };
 
   return (
-    <section id="projects" className="section-padding bg-[#0A192F] overflow-hidden">
+    <section id="projects" className="section-padding bg-[#0A192F] py-20 overflow-hidden">
       <motion.div 
         className="container mx-auto px-4 sm:px-6 lg:px-8"
         ref={containerRef}
@@ -130,14 +194,25 @@ const Projects = () => {
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
       >
-        <motion.h2 
-          className="text-4xl font-bold text-[#CCD6F6] mb-12 text-center sm:text-left"
-          variants={itemVariants}
-        >
-          Featured Projects
-        </motion.h2>
+        <motion.div className="text-center mb-16" variants={itemVariants}>
+          <motion.h2 
+            className="text-4xl font-bold text-[#CCD6F6] mb-4 inline-block relative"
+            variants={itemVariants}
+          >
+            Featured Projects
+            <motion.span 
+              className="absolute bottom-0 left-0 w-full h-1 bg-[#64FFDA]"
+              initial={{ width: 0 }}
+              animate={{ width: "100%" }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            />
+          </motion.h2>
+          <p className="text-[#8892B0] text-lg max-w-2xl mx-auto">
+            A collection of projects that showcase my skills and passion for development
+          </p>
+        </motion.div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
             <motion.div
               key={project.title}
@@ -146,27 +221,68 @@ const Projects = () => {
                 y: -8,
                 transition: { duration: 0.2 }
               }}
-              className="bg-[#112240] rounded-lg overflow-hidden group transform transition-all duration-300 hover:shadow-xl hover:shadow-[#64FFDA]/10"
+              className="bg-[#112240] rounded-xl overflow-hidden group transform transition-all duration-300 hover:shadow-2xl hover:shadow-[#64FFDA]/10 border border-[#233554] hover:border-[#64FFDA]/50"
             >
-              <div className="p-6 relative">
+              <div className="p-6 h-full flex flex-col relative">
+                {/* Project Image with Preview */}
                 <motion.div 
-                  className="absolute inset-0 bg-gradient-to-br from-[#64FFDA]/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  initial={false}
-                  animate={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                />
-                
-                <motion.h3 
-                  className="text-[#CCD6F6] text-xl font-bold mb-2 group-hover:text-[#64FFDA] transition-colors duration-300 relative z-10"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
+                  className="relative w-full h-48 mb-4 rounded-lg overflow-hidden cursor-pointer"
+                  onClick={() => setSelectedProject(project)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  {project.title}
-                </motion.h3>
-                
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    onError={(e: any) => {
+                      e.target.src = '/images/projects/project-placeholder.png';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <FaExpand className="text-[#64FFDA] w-6 h-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300" />
+                  </div>
+                </motion.div>
+
+                {/* Project Title and Stats */}
+                <div className="flex flex-col mb-4">
+                  <motion.h3 
+                    className="text-[#CCD6F6] text-xl font-bold mb-2 group-hover:text-[#64FFDA] transition-colors duration-300"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    {project.title}
+                  </motion.h3>
+                  
+                  {/* GitHub Stats */}
+                  <div className="flex items-center space-x-4 mb-3">
+                    <motion.div 
+                      className="flex items-center space-x-1 text-[#8892B0] hover:text-[#64FFDA] transition-colors duration-300"
+                      whileHover={{ scale: 1.1 }}
+                    >
+                      <FaStar className="text-yellow-400 w-4 h-4" />
+                      <span className="text-sm">
+                        {repoStats[project.repoName]?.stars || 0}
+                      </span>
+                    </motion.div>
+                    <motion.div 
+                      className="flex items-center space-x-1 text-[#8892B0] hover:text-[#64FFDA] transition-colors duration-300"
+                      whileHover={{ scale: 1.1 }}
+                    >
+                      <FaCodeBranch className="text-[#64FFDA] w-4 h-4" />
+                      <span className="text-sm">
+                        {repoStats[project.repoName]?.forks || 0}
+                      </span>
+                    </motion.div>
+                  </div>
+                </div>
+
+                {/* Project Description */}
                 <motion.p 
-                  className="text-[#8892B0] mb-4 relative z-10 group-hover:text-[#A8B2D1] transition-colors duration-300"
+                  className="text-[#8892B0] mb-6 relative z-10 group-hover:text-[#A8B2D1] transition-colors duration-300 flex-grow"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: index * 0.1 + 0.2 }}
@@ -174,8 +290,9 @@ const Projects = () => {
                   {project.description}
                 </motion.p>
                 
+                {/* Technologies */}
                 <motion.div 
-                  className="flex flex-wrap gap-2 mb-4 relative z-10"
+                  className="flex flex-wrap gap-2 mb-6 relative z-10"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: index * 0.1 + 0.3 }}
@@ -183,46 +300,152 @@ const Projects = () => {
                   {project.technologies.map((tech) => (
                     <span
                       key={tech}
-                      className="bg-[#0A192F] text-[#64FFDA] px-3 py-1 rounded-full text-sm hover:bg-[#64FFDA]/10 transition-all duration-300 transform hover:scale-105"
+                      className="bg-[#233554] text-[#64FFDA] px-3 py-1 rounded-full text-sm font-mono hover:bg-[#64FFDA]/10 transition-all duration-300 transform hover:scale-105"
                     >
                       {tech}
                     </span>
                   ))}
                 </motion.div>
                 
+                {/* Project Links */}
                 <motion.div 
-                  className="flex space-x-4 relative z-10"
+                  className="flex items-center space-x-4 relative z-10 mt-auto"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: index * 0.1 + 0.4 }}
                 >
-                  <motion.a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[#CCD6F6] hover:text-[#64FFDA] transition-all duration-300"
-                    whileHover={{ scale: 1.2 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <FaGithub className="w-6 h-6" />
-                  </motion.a>
                   {project.demo && (
                     <motion.a
                       href={project.demo}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[#CCD6F6] hover:text-[#64FFDA] transition-all duration-300"
-                      whileHover={{ scale: 1.2 }}
-                      whileTap={{ scale: 0.95 }}
+                      className="flex-1 bg-[#64FFDA] text-[#0A192F] py-2 px-4 rounded-md font-medium text-center hover:bg-[#4CD6B9] transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                     >
-                      <FaExternalLinkAlt className="w-5 h-5" />
+                      <FaExternalLinkAlt className="w-4 h-4" />
+                      <span>Live Preview</span>
                     </motion.a>
                   )}
+                  <motion.a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center w-10 h-10 rounded-full bg-[#233554] text-[#CCD6F6] hover:text-[#64FFDA] hover:bg-[#64FFDA]/10 transition-all duration-300"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    aria-label="View on GitHub"
+                  >
+                    <FaGithub className="w-5 h-5" />
+                  </motion.a>
                 </motion.div>
               </div>
             </motion.div>
           ))}
         </div>
+
+        {/* Image Preview Modal */}
+        <AnimatePresence>
+          {selectedProject && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0A192F]/90 backdrop-blur-sm"
+              onClick={() => {
+                if (!isZoomed) setSelectedProject(null);
+                setIsZoomed(false);
+              }}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="relative max-w-5xl w-full bg-[#112240] rounded-xl overflow-hidden shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Image Container */}
+                <div className={`relative ${isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'}`}
+                     onClick={() => setIsZoomed(!isZoomed)}>
+                  <div className={`relative transition-all duration-300 ease-in-out ${
+                    isZoomed ? 'h-[80vh]' : 'aspect-video'
+                  }`}>
+                    <Image
+                      src={selectedProject.image}
+                      alt={selectedProject.title}
+                      fill
+                      className={`object-contain transition-all duration-300 ${
+                        isZoomed ? 'scale-110' : 'scale-100'
+                      }`}
+                      quality={100}
+                      onError={(e: any) => {
+                        e.target.src = '/images/projects/project-placeholder.png';
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Project Info Overlay */}
+                <motion.div 
+                  className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#112240] p-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <h3 className="text-2xl font-bold text-[#CCD6F6] mb-2">{selectedProject.title}</h3>
+                  <p className="text-[#8892B0] mb-4">{selectedProject.description}</p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {selectedProject.technologies.map((tech) => (
+                      <span
+                        key={tech}
+                        className="bg-[#233554] text-[#64FFDA] px-3 py-1 rounded-full text-sm font-mono"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex space-x-4">
+                    {selectedProject.demo && (
+                      <motion.a
+                        href={selectedProject.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 bg-[#64FFDA] text-[#0A192F] py-2 px-4 rounded-md font-medium text-center hover:bg-[#4CD6B9] transition-all duration-300"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        Visit Live Site
+                      </motion.a>
+                    )}
+                    <motion.a
+                      href={selectedProject.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 border border-[#64FFDA] text-[#64FFDA] py-2 px-4 rounded-md font-medium text-center hover:bg-[#64FFDA]/10 transition-all duration-300"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      View Source Code
+                    </motion.a>
+                  </div>
+                </motion.div>
+
+                {/* Close Button */}
+                <motion.button
+                  className="absolute top-4 right-4 text-[#64FFDA] p-2 rounded-full bg-[#233554] hover:bg-[#64FFDA]/20 transition-colors duration-300"
+                  onClick={() => {
+                    setSelectedProject(null);
+                    setIsZoomed(false);
+                  }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <FaTimes className="w-6 h-6" />
+                </motion.button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     </section>
   );
