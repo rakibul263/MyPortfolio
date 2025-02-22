@@ -57,8 +57,8 @@ const Contact = () => {
     {
       icon: FaPhone,
       label: 'Phone',
-      value: '+880 1521-564157',
-      href: 'tel:+8801521564157'
+      value: '+88015 21-711716',
+      href: 'tel:+88015 21-711716'
     },
     {
       icon: FaTelegram,
