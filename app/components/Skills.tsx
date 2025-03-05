@@ -1,7 +1,7 @@
 'use client';
 
 import { FaCode, FaLaptopCode, FaTools, FaServer, FaBrain, FaLaptop, FaHtml5, FaCss3Alt, FaJs, FaReact, FaJava, FaPython, FaNode, FaDatabase, FaGitAlt, FaGithub, FaMicrosoft, FaFileExcel, FaFilePowerpoint } from 'react-icons/fa';
-import { SiTailwindcss, SiBootstrap, SiDjango, SiMysql, SiSqlite, SiCplusplus, SiC, SiVisualstudiocode, SiCanva, SiCisco } from 'react-icons/si';
+import { SiTailwindcss, SiBootstrap, SiDjango, SiMysql, SiSqlite, SiCplusplus, SiC, SiVisualstudiocode, SiCanva, SiCisco, SiIntellijidea, SiNotion, SiArduino } from 'react-icons/si';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
@@ -67,8 +67,11 @@ const skillCategories = [
     description: 'Tools used for development',
     skills: [
       { name: 'VS Code', level: 90, color: '#007ACC', icon: SiVisualstudiocode },
+      { name: 'IntelliJ IDEA', level: 85, color: '#FE315D', icon: SiIntellijidea },
       { name: 'Git', level: 88, color: '#F05032', icon: FaGitAlt },
       { name: 'GitHub', level: 85, color: '#181717', icon: FaGithub },
+      { name: 'MySQL Workbench', level: 82, color: '#4479A1', icon: SiMysql },
+      { name: 'Arduino', level: 75, color: '#00979D', icon: SiArduino },
     ]
   },
   {
@@ -81,6 +84,7 @@ const skillCategories = [
       { name: 'PowerPoint', level: 90, color: '#C43A2B', icon: FaFilePowerpoint },
       { name: 'Excel', level: 88, color: '#217346', icon: FaFileExcel },
       { name: 'Canva', level: 85, color: '#0055FF', icon: SiCanva },
+      { name: 'Notion', level: 88, color: '#000000', icon: SiNotion },
     ]
   }
 ];
