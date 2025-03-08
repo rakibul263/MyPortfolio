@@ -1,6 +1,6 @@
 'use client';
 
-import { FaGithub, FaExternalLinkAlt, FaStar, FaCodeBranch, FaTimes, FaExpand } from 'react-icons/fa';
+import { FaGithub, FaExternalLinkAlt, FaStar, FaCodeBranch, FaTimes, FaExpand, FaLaptopCode, FaServer, FaDatabase, FaMobile, FaCube, FaCode } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
@@ -21,6 +21,7 @@ interface Project {
   demo: string | null;
   repoName: string;
   image: string;
+  category: 'frontend' | 'backend' | 'fullstack' | 'mobile' | 'other';
 }
 
 const projects: Project[] = [
@@ -31,7 +32,8 @@ const projects: Project[] = [
     github: 'https://github.com/rakibul263/Meal-Explorer',
     demo: 'https://rakibul263.github.io/Meal-Explorer/',
     repoName: 'Meal-Explorer',
-    image: '/images/projects/meal-explorer.png'
+    image: '/images/projects/meal-explorer.png',
+    category: 'frontend'
   },
   {
     title: 'Nature Platter',
@@ -40,7 +42,8 @@ const projects: Project[] = [
     github: 'https://github.com/rakibul263/Nature-Platter',
     demo: 'https://rakibul263.github.io/Nature-Platter/',
     repoName: 'Nature-Platter',
-    image: '/images/projects/nature-platter.png'
+    image: '/images/projects/nature-platter.png',
+    category: 'frontend'
   },
   {
     title: 'Biker Zone',
@@ -49,7 +52,8 @@ const projects: Project[] = [
     github: 'https://github.com/rakibul263/Biker-Zone',
     demo: 'https://rakibul263.github.io/Biker-Zone/',
     repoName: 'Biker-Zone',
-    image: '/images/projects/biker-zone.png'
+    image: '/images/projects/biker-zone.png',
+    category: 'frontend'
   },
   {
     title: 'Tea House',
@@ -58,7 +62,8 @@ const projects: Project[] = [
     github: 'https://github.com/rakibul263/Tea-House',
     demo: 'https://rakibul263.github.io/Tea-House/',
     repoName: 'Tea-House',
-    image: '/images/projects/tea-house.png'
+    image: '/images/projects/tea-house.png',
+    category: 'frontend'
   },
   {
     title: 'Penguin Fashion',
@@ -67,7 +72,8 @@ const projects: Project[] = [
     github: 'https://github.com/rakibul263/Penguin-Fashion-Using-Tailwind',
     demo: 'https://github.com/rakibul263/Penguin-Fashion-Using-Tailwind/',
     repoName: 'Penguin-Fashion-Using-Tailwind',
-    image: '/images/projects/penguin-fashion.png'
+    image: '/images/projects/penguin-fashion.png',
+    category: 'frontend'
   },
   {
     title: 'Kids School',
@@ -76,7 +82,8 @@ const projects: Project[] = [
     github: 'https://github.com/rakibul263/Kids-School',
     demo: 'https://rakibul263.github.io/Kids-School/',
     repoName: 'Kids-School',
-    image: '/images/projects/kids-school.png'
+    image: '/images/projects/kids-school.png',
+    category: 'frontend'
   },
   {
     title: 'Architects Horizon',
@@ -85,7 +92,8 @@ const projects: Project[] = [
     github: 'https://github.com/rakibul263/Architects-Horizon',
     demo: 'https://rakibul263.github.io/Architects-Horizon/',
     repoName: 'Architects-Horizon',
-    image: '/images/projects/architects-horizon.png'
+    image: '/images/projects/architects-horizon.png',
+    category: 'frontend'
   },
   {
     title: 'Bangladesh 2.0',
@@ -94,7 +102,8 @@ const projects: Project[] = [
     github: 'https://github.com/rakibul263/BANGLADESH-2.0',
     demo: 'https://rakibul263.github.io/BANGLADESH-2.0/',
     repoName: 'BANGLADESH-2.0',
-    image: '/images/projects/bangladesh.png'
+    image: '/images/projects/bangladesh.png',
+    category: 'frontend'
   },
   {
     title: 'New Year Offer Portfolio',
@@ -103,7 +112,8 @@ const projects: Project[] = [
     github: 'https://github.com/rakibul263/New-Year-Offer-Portfolio',
     demo: 'https://rakibul263.github.io/New-Year-Offer-Portfolio/',
     repoName: 'New-Year-Offer-Portfolio',
-    image: '/images/projects/new-year-portfolio.png'
+    image: '/images/projects/new-year-portfolio.png',
+    category: 'frontend'
   },
   {
     title: 'Spotify Clone',
@@ -112,7 +122,8 @@ const projects: Project[] = [
     github: 'https://github.com/rakibul263/Spotify-Clone',
     demo: 'https://rakibul263.github.io/Spotify-Clone/',
     repoName: 'Spotify-Clone',
-    image: '/images/projects/spotify-clone.png'
+    image: '/images/projects/spotify-clone.png',
+    category: 'frontend'
   },
   {
     title: 'Word Cloud',
@@ -121,7 +132,8 @@ const projects: Project[] = [
     github: 'https://github.com/rakibul263/Word-Cloud',
     demo: 'https://github.com/rakibul263/Word-Cloud/blob/main/Screenshot.png',
     repoName: 'Word-Cloud',
-    image: '/images/projects/word-cloud.png'
+    image: '/images/projects/word-cloud.png',
+    category: 'backend'
   },
   {
     title: 'Daffodil Bank',
@@ -130,7 +142,8 @@ const projects: Project[] = [
     github: 'https://github.com/rakibul263/Daffodil-Bank',
     demo: null,
     repoName: 'Daffodil-Bank',
-    image: '/images/projects/daffodil-bank.png'
+    image: '/images/projects/daffodil-bank.png',
+    category: 'backend'
   },
 ];
 
@@ -140,6 +153,20 @@ const Projects = () => {
   const [repoStats, setRepoStats] = useState<Record<string, RepoStats>>({});
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isZoomed, setIsZoomed] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+
+  const categories = [
+    { id: 'all', name: 'All Projects', icon: FaCode },
+    { id: 'frontend', name: 'Frontend', icon: FaLaptopCode },
+    { id: 'backend', name: 'Backend', icon: FaServer },
+    { id: 'fullstack', name: 'Full Stack', icon: FaDatabase },
+    { id: 'mobile', name: 'Mobile', icon: FaMobile },
+    { id: 'other', name: 'Other', icon: FaCube }
+  ];
+
+  const filteredProjects = selectedCategory === 'all'
+    ? projects
+    : projects.filter(project => project.category === selectedCategory);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -212,8 +239,39 @@ const Projects = () => {
           </p>
         </motion.div>
         
+        <motion.div 
+          className="flex flex-wrap justify-center gap-4 mb-12"
+          variants={itemVariants}
+        >
+          {categories.map(category => (
+            <motion.button
+              key={category.id}
+              onClick={() => setSelectedCategory(category.id)}
+              className={`px-6 py-3 rounded-full flex items-center gap-2 transition-all duration-300 ${
+                selectedCategory === category.id
+                  ? 'bg-[#64FFDA] text-[#0A192F] shadow-lg shadow-[#64FFDA]/20'
+                  : 'bg-[#112240] text-[#8892B0] hover:text-[#64FFDA] hover:bg-[#233554]'
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <category.icon className="w-5 h-5" />
+              <span>{category.name}</span>
+              {selectedCategory === category.id && (
+                <motion.span
+                  className="ml-2 bg-[#0A192F] text-[#64FFDA] px-2 py-1 rounded-full text-sm"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                >
+                  {filteredProjects.length}
+                </motion.span>
+              )}
+            </motion.button>
+          ))}
+        </motion.div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
+          {filteredProjects.map((project, index) => (
             <motion.div
               key={project.title}
               variants={itemVariants}
@@ -339,10 +397,33 @@ const Projects = () => {
                     <FaGithub className="w-5 h-5" />
                   </motion.a>
                 </motion.div>
+
+                {/* Category Badge */}
+                <motion.span
+                  className="absolute top-4 right-4 bg-[#233554] text-[#64FFDA] px-3 py-1 rounded-full text-sm font-mono"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  {project.category}
+                </motion.span>
               </div>
             </motion.div>
           ))}
         </div>
+
+        {/* Empty state when no projects match the filter */}
+        {filteredProjects.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-12"
+          >
+            <p className="text-[#8892B0] text-lg">
+              No projects found in this category.
+            </p>
+          </motion.div>
+        )}
 
         {/* Image Preview Modal */}
         <AnimatePresence>
