@@ -26,6 +26,36 @@ interface Project {
 
 const projects: Project[] = [
   {
+    title: 'Portfolio',
+    description: 'A web application for Personal Portfolio',
+    technologies: ['TypeScript', 'CSS', 'JavaScript'],
+    github: 'https://github.com/rakibul263/MyPortfolio',
+    demo: 'https://rakibulhasanshuvo.netlify.app/',
+    repoName: 'Portfolio',
+    image: '/images/projects/portfolio.png',
+    category: 'fullstack'
+  },
+  {
+    title: 'DevBoard',
+    description: 'A web application for devBoard',
+    technologies: ['HTML', 'Tailwind', 'DaisyUi', 'JavaScript'],
+    github: 'https://github.com/rakibul263/Dev-Board',
+    demo: 'https://dev-board-01.netlify.app/',
+    repoName: 'dev-board',
+    image: '/images/projects/devBoard.png',
+    category: 'frontend'
+  },
+  {
+    title: 'Payoo Mobile Bank',
+    description: 'A web application for Payoo.',
+    technologies: ['HTML', 'Tailwind', 'DaisyUi', 'JavaScript'],
+    github: 'https://github.com/rakibul263/Payoo-Mobile-Bank',
+    demo: 'https://rakibul263.github.io/Payoo-Mobile-Bank/',
+    repoName: 'Payoo-Mobile-Bank',
+    image: '/images/projects/payoo.png',
+    category: 'frontend'
+  },
+  {
     title: 'Meal Explorer',
     description: 'A web application for exploring meal recipes.',
     technologies: ['HTML', 'CSS', 'JavaScript'],
