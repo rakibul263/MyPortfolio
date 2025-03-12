@@ -8,7 +8,7 @@ import { FaCode, FaGraduationCap, FaPuzzlePiece, FaChalkboardTeacher } from 'rea
 
 const About = () => {
   const containerRef = useRef(null);
-  const imageRef = useRef(null);
+  const imageRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
   const [isMounted, setIsMounted] = useState(false);
 
