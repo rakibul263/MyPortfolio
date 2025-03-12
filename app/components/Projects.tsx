@@ -243,9 +243,16 @@ const Projects = () => {
   };
 
   return (
-    <section id="projects" className="section-padding bg-[#0A192F] py-20 overflow-hidden">
+    <section id="projects" className="section-padding bg-[#0A192F] py-20 overflow-hidden relative">
+      {/* Background Animation Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute w-[500px] h-[500px] bg-[#64FFDA]/5 rounded-full blur-3xl -top-48 -right-48 animate-pulse"></div>
+        <div className="absolute w-[500px] h-[500px] bg-[#4CD6B9]/5 rounded-full blur-3xl -bottom-48 -left-48 animate-pulse delay-1000"></div>
+        <div className="absolute w-96 h-96 bg-[#64FFDA]/10 rounded-full blur-2xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-blob"></div>
+      </div>
+
       <motion.div 
-        className="container mx-auto px-4 sm:px-6 lg:px-8"
+        className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
         ref={containerRef}
         variants={containerVariants}
         initial="hidden"
@@ -277,21 +284,38 @@ const Projects = () => {
             <motion.button
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
-              className={`px-6 py-3 rounded-full flex items-center gap-2 transition-all duration-300 ${
+              className={`px-8 py-4 rounded-xl flex items-center gap-3 transition-all duration-500 border-2 backdrop-blur-sm ${
                 selectedCategory === category.id
-                  ? 'bg-[#64FFDA] text-[#0A192F] shadow-lg shadow-[#64FFDA]/20'
-                  : 'bg-[#112240] text-[#8892B0] hover:text-[#64FFDA] hover:bg-[#233554]'
-              }`}
-              whileHover={{ scale: 1.05 }}
+                  ? 'bg-gradient-to-r from-[#64FFDA] via-[#4CD6B9] to-[#64FFDA] text-[#0A192F] border-[#64FFDA] shadow-xl shadow-[#64FFDA]/30 transform scale-105'
+                  : 'bg-[#112240]/80 text-[#8892B0] border-[#233554] hover:text-[#64FFDA] hover:border-[#64FFDA] hover:bg-[#233554]/90 hover:shadow-xl hover:shadow-[#64FFDA]/20'
+              } group relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-[#64FFDA]/10 before:via-[#4CD6B9]/10 before:to-[#64FFDA]/10 before:translate-x-[-100%] hover:before:translate-x-0 before:transition before:duration-500 before:ease-out`}
+              whileHover={{ 
+                scale: selectedCategory === category.id ? 1.05 : 1.08,
+                transition: { 
+                  duration: 0.3,
+                  ease: [0.43, 0.13, 0.23, 0.96]
+                }
+              }}
               whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
             >
-              <category.icon className="w-5 h-5" />
-              <span>{category.name}</span>
+              <category.icon className={`w-6 h-6 transition-all duration-500 relative z-10 ${
+                selectedCategory === category.id ? 'rotate-0 scale-110 text-[#0A192F]' : 'text-[#64FFDA] group-hover:rotate-12'
+              }`} />
+              <span className="font-semibold tracking-wider relative z-10">{category.name}</span>
               {selectedCategory === category.id && (
                 <motion.span
-                  className="ml-2 bg-[#0A192F] text-[#64FFDA] px-2 py-1 rounded-full text-sm"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
+                  className="ml-2 bg-[#0A192F] text-[#64FFDA] px-4 py-1 rounded-lg text-sm font-bold tracking-wider shadow-inner relative z-10"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ 
+                    type: "spring",
+                    stiffness: 500,
+                    damping: 25,
+                    mass: 1
+                  }}
                 >
                   {filteredProjects.length}
                 </motion.span>
@@ -306,38 +330,44 @@ const Projects = () => {
               key={project.title}
               variants={itemVariants}
               whileHover={{ 
-                y: -8,
-                transition: { duration: 0.2 }
+                y: -12,
+                transition: { duration: 0.3, ease: "easeOut" }
               }}
-              className="bg-[#112240] rounded-xl overflow-hidden group transform transition-all duration-300 hover:shadow-2xl hover:shadow-[#64FFDA]/10 border border-[#233554] hover:border-[#64FFDA]/50"
+              className="bg-[#112240] rounded-2xl overflow-hidden group transform transition-all duration-500 hover:shadow-2xl hover:shadow-[#64FFDA]/20 border-2 border-[#233554] hover:border-[#64FFDA]"
             >
-              <div className="p-6 h-full flex flex-col relative">
+              <div className="p-8 h-full flex flex-col relative backdrop-blur-sm bg-[#112240]/90 group">
                 {/* Project Image with Preview */}
                 <motion.div 
-                  className="relative w-full h-48 mb-4 rounded-lg overflow-hidden cursor-pointer"
+                  className="relative w-full h-56 mb-6 rounded-xl overflow-hidden cursor-pointer transform-gpu shadow-lg"
                   onClick={() => setSelectedProject(project)}
-                  whileHover={{ scale: 1.02 }}
+                  whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   <Image
                     src={project.image}
                     alt={project.title}
                     fill
-                    className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
+                    className="object-cover object-top transition-transform duration-700 group-hover:scale-110"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     onError={(e: any) => {
                       e.target.src = '/images/projects/project-placeholder.png';
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <FaExpand className="text-[#64FFDA] w-6 h-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F]/95 via-[#0A192F]/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center backdrop-blur-sm">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      whileHover={{ scale: 1.2 }}
+                      className="bg-[#64FFDA] p-4 rounded-xl shadow-lg"
+                    >
+                      <FaExpand className="text-[#0A192F] w-8 h-8" />
+                    </motion.div>
                   </div>
                 </motion.div>
 
                 {/* Project Title and Stats */}
-                <div className="flex flex-col mb-4">
+                <div className="flex flex-col mb-6">
                   <motion.h3 
-                    className="text-[#CCD6F6] text-xl font-bold mb-2 group-hover:text-[#64FFDA] transition-colors duration-300"
+                    className="text-2xl font-bold mb-3 group-hover:text-[#64FFDA] transition-colors duration-300"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
@@ -346,22 +376,22 @@ const Projects = () => {
                   </motion.h3>
                   
                   {/* GitHub Stats */}
-                  <div className="flex items-center space-x-4 mb-3">
+                  <div className="flex items-center space-x-6 mb-3">
                     <motion.div 
-                      className="flex items-center space-x-1 text-[#8892B0] hover:text-[#64FFDA] transition-colors duration-300"
+                      className="flex items-center space-x-2 text-[#8892B0] hover:text-[#64FFDA] transition-colors duration-300"
                       whileHover={{ scale: 1.1 }}
                     >
-                      <FaStar className="text-yellow-400 w-4 h-4" />
-                      <span className="text-sm">
+                      <FaStar className="text-yellow-400 w-5 h-5" />
+                      <span className="text-sm font-semibold">
                         {repoStats[project.repoName]?.stars || 0}
                       </span>
                     </motion.div>
                     <motion.div 
-                      className="flex items-center space-x-1 text-[#8892B0] hover:text-[#64FFDA] transition-colors duration-300"
+                      className="flex items-center space-x-2 text-[#8892B0] hover:text-[#64FFDA] transition-colors duration-300"
                       whileHover={{ scale: 1.1 }}
                     >
-                      <FaCodeBranch className="text-[#64FFDA] w-4 h-4" />
-                      <span className="text-sm">
+                      <FaCodeBranch className="text-[#64FFDA] w-5 h-5" />
+                      <span className="text-sm font-semibold">
                         {repoStats[project.repoName]?.forks || 0}
                       </span>
                     </motion.div>
@@ -370,7 +400,7 @@ const Projects = () => {
 
                 {/* Project Description */}
                 <motion.p 
-                  className="text-[#8892B0] mb-6 relative z-10 group-hover:text-[#A8B2D1] transition-colors duration-300 flex-grow"
+                  className="text-[#8892B0] mb-8 relative z-10 group-hover:text-[#A8B2D1] transition-colors duration-300 flex-grow text-lg leading-relaxed"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: index * 0.1 + 0.2 }}
@@ -380,24 +410,26 @@ const Projects = () => {
                 
                 {/* Technologies */}
                 <motion.div 
-                  className="flex flex-wrap gap-2 mb-6 relative z-10"
+                  className="flex flex-wrap gap-3 mb-8 relative z-10"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: index * 0.1 + 0.3 }}
                 >
                   {project.technologies.map((tech) => (
-                    <span
+                    <motion.span
                       key={tech}
-                      className="bg-[#233554] text-[#64FFDA] px-3 py-1 rounded-full text-sm font-mono hover:bg-[#64FFDA]/10 transition-all duration-300 transform hover:scale-105"
+                      className="relative overflow-hidden bg-[#233554]/80 text-[#64FFDA] px-4 py-2 rounded-lg text-sm font-mono font-medium hover:bg-[#64FFDA]/10 transition-all duration-300 transform hover:scale-105 shadow-md border border-[#233554] hover:border-[#64FFDA]/50 group backdrop-blur-sm"
+                      whileHover={{ scale: 1.05 }}
                     >
-                      {tech}
-                    </span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#64FFDA]/5 to-[#4CD6B9]/5 transform transition-transform duration-500 -translate-x-full group-hover:translate-x-0" />
+                      <span className="relative z-10">{tech}</span>
+                    </motion.span>
                   ))}
                 </motion.div>
                 
                 {/* Project Links */}
                 <motion.div 
-                  className="flex items-center space-x-4 relative z-10 mt-auto"
+                  className="flex items-center space-x-6 relative z-10 mt-auto"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: index * 0.1 + 0.4 }}
@@ -407,30 +439,45 @@ const Projects = () => {
                       href={project.demo}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 bg-[#64FFDA] text-[#0A192F] py-2 px-4 rounded-md font-medium text-center hover:bg-[#4CD6B9] transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
-                      whileHover={{ scale: 1.02 }}
+                      className="flex-1 relative overflow-hidden bg-gradient-to-r from-[#64FFDA] via-[#4CD6B9] to-[#64FFDA] text-[#0A192F] py-4 px-8 rounded-xl font-bold text-center transition-all duration-500 transform hover:scale-105 hover:shadow-xl hover:shadow-[#64FFDA]/30 flex items-center justify-center space-x-3 border-2 border-transparent hover:border-[#64FFDA] group before:absolute before:inset-0 before:bg-gradient-to-r before:from-[#4CD6B9] before:via-[#64FFDA] before:to-[#4CD6B9] before:translate-x-[-100%] hover:before:translate-x-0 before:transition before:duration-500 before:ease-out isolate"
+                      whileHover={{ 
+                        scale: 1.05,
+                        transition: { 
+                          duration: 0.3,
+                          ease: [0.43, 0.13, 0.23, 0.96]
+                        }
+                      }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      <FaExternalLinkAlt className="w-4 h-4" />
-                      <span>Live Preview</span>
+                      <span className="relative z-10 flex items-center gap-3 group-hover:text-[#0A192F] transition-colors duration-300">
+                        <FaExternalLinkAlt className="w-5 h-5 group-hover:rotate-45 transition-transform duration-300" />
+                        <span className="tracking-wider">Live Preview</span>
+                      </span>
                     </motion.a>
                   )}
                   <motion.a
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center w-10 h-10 rounded-full bg-[#233554] text-[#CCD6F6] hover:text-[#64FFDA] hover:bg-[#64FFDA]/10 transition-all duration-300"
-                    whileHover={{ scale: 1.1 }}
+                    className="relative overflow-hidden flex items-center justify-center w-16 h-16 rounded-xl bg-[#233554]/80 text-[#CCD6F6] hover:text-[#64FFDA] transition-all duration-500 hover:shadow-xl hover:shadow-[#64FFDA]/20 border-2 border-[#233554] hover:border-[#64FFDA] group backdrop-blur-sm before:absolute before:inset-0 before:bg-gradient-to-r before:from-[#64FFDA]/10 before:via-[#4CD6B9]/10 before:to-[#64FFDA]/10 before:translate-x-[-100%] hover:before:translate-x-0 before:transition before:duration-500 before:ease-out"
+                    whileHover={{ 
+                      scale: 1.1,
+                      rotate: 360,
+                      transition: { 
+                        duration: 0.5,
+                        ease: [0.43, 0.13, 0.23, 0.96]
+                      }
+                    }}
                     whileTap={{ scale: 0.9 }}
                     aria-label="View on GitHub"
                   >
-                    <FaGithub className="w-5 h-5" />
+                    <FaGithub className="w-7 h-7 relative z-10 transition-transform duration-300" />
                   </motion.a>
                 </motion.div>
 
                 {/* Category Badge */}
                 <motion.span
-                  className="absolute top-4 right-4 bg-[#233554] text-[#64FFDA] px-3 py-1 rounded-full text-sm font-mono"
+                  className="absolute top-6 right-6 bg-[#233554] text-[#64FFDA] px-4 py-2 rounded-lg text-sm font-mono font-medium border border-[#64FFDA]/30 shadow-lg"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
@@ -558,6 +605,20 @@ const Projects = () => {
           )}
         </AnimatePresence>
       </motion.div>
+
+      <style jsx global>{`
+        @keyframes blob {
+          0%, 100% {
+            transform: translate(-50%, -50%) scale(1);
+          }
+          50% {
+            transform: translate(-50%, -50%) scale(1.2);
+          }
+        }
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+      `}</style>
     </section>
   );
 };
