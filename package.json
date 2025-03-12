@@ -9,19 +9,21 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@radix-ui/react-tooltip": "^1.1.8",
     "@types/node": "^20.0.0",
     "@types/nodemailer": "^6.4.17",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
-    "framer-motion": "^12.4.7",
+    "framer-motion": "^12.5.0",
     "next": "^14.0.0",
     "nodemailer": "^6.10.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.5.2",
     "react-icons": "^4.12.0",
-    "react-intersection-observer": "^9.15.1",
+    "react-intersection-observer": "^9.16.0",
+    "react-toastify": "^11.0.5",
     "recharts": "^2.15.1",
     "typescript": "^5.0.0"
   },
