@@ -46,6 +46,26 @@ const projects: Project[] = [
     category: 'frontend'
   },
   {
+    title: 'PH Tube',
+    description: 'A web application for PH TUBE',
+    technologies: ['HTML', 'Tailwind', 'DaisyUi', 'JavaScript'],
+    github: 'https://github.com/rakibul263/PH-TUBE',
+    demo: 'https://rakibul263.github.io/PH-TUBE/',
+    repoName: 'PH-TUBE',
+    image: '/images/projects/ph-tube.png',
+    category: 'backend'
+  },
+  {
+    title: 'English Janala',
+    description: 'A web application for English-Janala',
+    technologies: ['HTML', 'Tailwind', 'DaisyUi', 'JavaScript'],
+    github: 'https://github.com/rakibul263/English-Janala',
+    demo: 'https://rakibul263.github.io/English-Janala/',
+    repoName: 'English-Janala',
+    image: '/images/projects/english-janala.png',
+    category: 'backend'
+  },
+  {
     title: 'Payoo Mobile Bank',
     description: 'A web application for Payoo.',
     technologies: ['HTML', 'Tailwind', 'DaisyUi', 'JavaScript'],
