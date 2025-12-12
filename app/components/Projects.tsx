@@ -39,6 +39,16 @@ interface Project {
 
 const projects: Project[] = [
   {
+    title: "Daffodil Bank",
+    description: "create a bank for DIU",
+    technologies: ["PHP", "Laravel"],
+    github: "https://github.com/rakibul263/Bank",
+    demo: "https://youtu.be/3OfBK3Zn7Ew",
+    repoName: "Daffodil Bank",
+    image: "/images/projects/Bank.png",
+    category: "fullstack",
+  },
+  {
     title: "Roomie",
     description: "The roommate finder app",
     technologies: [
