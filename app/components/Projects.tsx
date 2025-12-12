@@ -55,6 +55,16 @@ const projects: Project[] = [
     category: "fullstack",
   },
   {
+    title: "Obys Agency Clone",
+    description: "Smooth animation website",
+    technologies: ["GSAP", "TypeScript", "JavaScript", "TailwindCSS"],
+    github: "https://github.com/rakibul263/obys-agency-clone",
+    demo: "https://obys-agency-clone-by-empty-stack.netlify.app/",
+    repoName: "Obys",
+    image: "/images/projects/Obys.png",
+    category: "frontend",
+  },
+  {
     title: "AppHub",
     description: "AppStore Clone For Auth",
     technologies: [
