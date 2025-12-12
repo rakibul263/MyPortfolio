@@ -26,6 +26,16 @@ interface Project {
 
 const projects: Project[] = [
   {
+    title: 'Roomie',
+    description: 'The roommate finder app',
+    technologies: ['React', 'TypeScript', 'JavaScript', 'TailwindCSS', 'MongoDB'],
+    github: 'https://github.com/rakibul263/Roomie',
+    demo: 'roomie-finder-bd.web.app/',
+    repoName: 'Roomie',
+    image: '/images/projects/Roomie.png',
+    category: 'fullstack'
+  },
+  {
     title: 'Portfolio',
     description: 'A web application for Personal Portfolio',
     technologies: ['TypeScript', 'CSS', 'JavaScript'],
