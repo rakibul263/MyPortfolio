@@ -40,8 +40,7 @@ interface Project {
 const projects: Project[] = [
   {
     title: "Pouchai",
-    description:
-      "A full-stack parcel delivery management system with role-based dashboards for users, admins, and riders. It supports parcel booking, real-time tracking, rider assignment, automated pricing, and nationwide delivery workflow.",
+    description: "A Modern Parcel Management System",
     technologies: [
       "React.js",
       "Tailwind CSS",
