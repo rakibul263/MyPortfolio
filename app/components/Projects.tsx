@@ -39,6 +39,27 @@ interface Project {
 
 const projects: Project[] = [
   {
+    title: "Pouchai",
+    description:
+      "A full-stack parcel delivery management system with role-based dashboards for users, admins, and riders. It supports parcel booking, real-time tracking, rider assignment, automated pricing, and nationwide delivery workflow.",
+    technologies: [
+      "React.js",
+      "Tailwind CSS",
+      "Framer Motion",
+      "React Router",
+      "React Icons",
+      "AOS Animation",
+      "Firebase",
+      "Express.js",
+      "MongoDB",
+    ],
+    github: "https://github.com/rakibul263/Pouchai",
+    demo: "https://pouchai-e8860.web.app/",
+    repoName: "Pouchai",
+    image: "/images/projects/Pouchai.png",
+    category: "fullstack",
+  },
+  {
     title: "Daffodil Bank",
     description: "create a bank for DIU",
     technologies: ["PHP", "Laravel"],
@@ -290,7 +311,7 @@ const Projects = () => {
       for (const project of projects) {
         try {
           const response = await fetch(
-            `/api/github-stats?repo=${project.repoName}`
+            `/api/github-stats?repo=${project.repoName}`,
           );
           const data = await response.json();
           stats[project.repoName] = data;
